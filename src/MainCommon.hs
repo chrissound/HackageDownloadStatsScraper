@@ -21,9 +21,13 @@ getDocumentByArgs = do
       _ -> error "Invalid parameters passed"
 
 extractRights :: ParsedDocument -> Either String [PackageStat]
-extractRights (Right x) = case sequence . map (getListOfPackages . listToTuple) $ chunksOf 2 x of
+extractRights (Right x) = case traverse (getListOfPackages . listToTuple) $ chunksOf 2 x of
    Right r -> return r
-   Left (_, required) -> Left $ "Package not parsed correctly: " ++ show required
+   Left (c, required) -> Left $
+     "Package not parsed correctly: "
+     ++ show required
+     ++ "\n"
+     ++ show c
 extractRights (Left (x, errorString)) = Left
   $ "Unable to parse package type, error occurred:"
   ++ errorString

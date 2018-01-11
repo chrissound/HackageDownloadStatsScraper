@@ -1,1 +1,1 @@
-ghcid '--command=stack ghci ArchPkgstatsScraper:ArchPkgstatsScraper' --test=main
+ghcid '--command=stack ghci HackageDownloadStatsScraper:HackageDownloadStatsScraper' --test=main

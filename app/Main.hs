@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 
 module Main where
@@ -12,13 +11,8 @@ import Data.Aeson (encode)
 main :: IO ()
 main = do
     doc <- getDocumentByArgs
-    let packageStats = PackagesStats
-          <$> f "core"
-          <*> f "extra"
-          <*> f "community"
-          <*> f "multilib"
-          <*> f "unknown"
-          where f x = extractRights ( parseArchDoc x $ doc )
+    let packageStats = PackagesStats <$> f ("core")
+          where f _ = extractRights ( parseDoc doc )
     case packageStats of
       Right pkgs -> do
         writeFile "packageStatistics.json" . toS $ encode pkgs
